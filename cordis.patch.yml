@@ -1,0 +1,6 @@
+# dsh-simple-memory：DSH 记忆管家（骨架，功能开发中）
+# 安装方式：软链到 ~/.dsh/profiles/web/node_modules/dsh-simple-memory + 本文件追加 entry
+# 生效方式：重启 dsh web
+- insert:
+    - id: simple-memory
+      name: 'dsh-simple-memory'

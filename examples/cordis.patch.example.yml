@@ -1,0 +1,5 @@
+# 手动挂载示例：在 ~/.dsh/cordis.patch.yml 追加
+
+- insert:
+    - id: simple-memory
+      name: 'dsh-simple-memory'
