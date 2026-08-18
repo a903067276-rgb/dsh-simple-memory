@@ -44,9 +44,8 @@
     }
   },
   "peerDependencies": {
-    "@deepseek-ai/cordis": "^4.0.1-rc.1"
+    "@deepseek-ai/cordis": "^4.0.1-rc.1",
+    "@deepseek-ai/dsh-tools": "^0.1.0-rc.7"
   },
-  "dependencies": {
-    "@deepseek-ai/dsh-tools": "0.1.0-rc.7"
-  }
+  "dependencies": {}
 }
