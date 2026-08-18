@@ -12,6 +12,7 @@
   },
   "files": [
     "lib",
+    "docs",
     "cordis.patch.yml"
   ],
   "keywords": [
