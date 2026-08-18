@@ -43,22 +43,60 @@ config, flat per-project lists plus global, click to read:
 
 ## How it works
 
-- **Storage (zero code)**: memory lives in one root `~/Documents/DSH/memory/`
-  (configurable): `common/` (global active) + `projects/<name>/` (per-project,
-  auto-created) + `references/` + `archive/` (cold zones) + `staging.md`
-  (promotion pool). The whole root is a single git repo; every memory
-  operation is committed as `mem: <action> <subject>` and can be rolled back.
-- **Plugin (thin entry points)**: Host injects the index via `agent/pre-step`
-  (once per session, filenames only — never the content) and registers the
-  `memory-write` tool plus HTTP RPC (status/list/read/init/config); Client
-  adds the memory button (`conversation.input.left`) and the settings page
-  (`settings.section`, browse + config). All official DSH APIs, zero runtime
-  dependencies.
-- **Search**: no index files — the agent's grep scans the whole memory root
-  (all projects + global + cold zones), active before cold.
-- **Design choice**: project memory does NOT live inside the project dir
-  (a `.gitignore`'d `memory/` would hide it from grep); publication isolation
-  is automatic instead.
+A retrieval-style memory: files are the storage, the plugin only handles the
+entry points. Full design: [docs/记忆系统设计说明](docs/记忆系统设计说明.md).
+
+- **Storage (zero code)** — everything lives in one memory root
+  `~/Documents/DSH/memory/` (configurable from the settings page):
+  ```
+  memory/
+  ├── common/          global experience (active zone, cross-project reuse)
+  ├── projects/<name>/ per-project memory (auto-created on first write)
+  ├── references/      cold zone: reference material (search-only)
+  ├── archive/         cold zone: forgotten memory moved out of the index
+  ├── staging.md       promotion pool (candidates for global reuse)
+  └── .git/            one git repo for the whole root — rollback safety
+  ```
+  Per-project memory does NOT live inside the project directory: a
+  `.gitignore`'d `memory/` would hide it from grep. Keeping it in the shared
+  root keeps publication isolation automatic and search universal.
+
+- **Index injection (remembers what exists)** — on the first step of every
+  session (`agent/pre-step`), the plugin injects a **filename list** (never
+  the content), grouped by category, covering the current project + global +
+  loose root files. The model then reads a full note (≤2KB each) on demand.
+  Cold zones are not injected — searched only when a topic hits.
+
+- **Write tool (records it)** — `memory-write` enforces the format: filename
+  `分类-主题.md`, first line `## date 分类-主题`, ≤2KB, category prefixes open
+  (built-in: 踩坑/流程/决策/偏好/背景). `scope` picks project or global.
+  Writing outside the workspace asks for approval (built-in confirmation).
+
+- **Memory button (triggers the flow)** — the bulb icon in the input bar
+  inserts a fixed, self-contained instruction: ① review the conversation
+  ② propose each item with a scope (project/global) + reason ③ wait for user
+  confirmation ④ write via `memory-write` ⑤ show the output ⑥ git commit
+  (`mem: 记 xxx`).
+
+- **Settings page (manage + browse)** — status line (active count, staging
+  count), memory-root config, one-click repo skeleton init, and an inline
+  browser listing every project flat plus global, click to read.
+
+- **Search (finds it)** — no index files: the agent's grep scans the whole
+  memory root (all projects + global + cold zones) in one pass, active zones
+  first.
+
+- **Promotion (cross-project reuse)** — project memory that looks reusable
+  goes into `staging.md` (low friction, no instant decision); when the pool
+  is non-empty the user is reminded, and after confirmation it is distilled
+  into `common/` and removed from the pool.
+
+- **Forgetting (fresh context)** — outdated notes move to `archive/` (soft
+  delete: still on disk, just out of the index). Context stays lean, disk
+  stays complete.
+
+- **Rollback** — every memory operation is committed immediately
+  (`mem: <action> <subject>`); a wrong write is one `git checkout` away.
 
 ## Install
 
