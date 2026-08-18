@@ -1,6 +1,6 @@
 {
   "name": "dsh-simple-memory",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Simple memory keeper for DSH: semi-automatic markdown accumulation, layered loading (global/project), cross-project search",
   "type": "module",
   "main": "lib/index.js",
