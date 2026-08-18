@@ -6,3 +6,4 @@ dist/
 uploads/
 pnpm-lock.yaml
 pnpm-workspace.yaml
+internal/
