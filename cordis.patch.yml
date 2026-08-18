@@ -1,5 +1,6 @@
-# dsh-simple-memory：DSH 记忆管家（骨架，功能开发中）
-# 安装方式：软链到 ~/.dsh/profiles/web/node_modules/dsh-simple-memory + 本文件追加 entry
+# dsh-simple-memory：DSH 记忆管家（0.2.0，功能已就绪）
+# bundle 安装：dsh plugin --profile web add "github:a903067276-rgb/dsh-simple-memory#main"
+# 记忆根目录等配置：写 ~/.dsh/profiles/web/cordis.patch.yml 的同名条目 config（设置页可改）
 # 生效方式：重启 dsh web
 - insert:
     - id: simple-memory

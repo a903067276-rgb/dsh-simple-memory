@@ -1,5 +1,7 @@
-# 手动挂载示例：在 ~/.dsh/cordis.patch.yml 追加
+# 手动挂载示例：在 ~/.dsh/profiles/web/cordis.patch.yml 追加
+# （注意：是 profiles/web/ 下的 patch 文件，不是 ~/.dsh/cordis.patch.yml）
 
-- insert:
-    - id: simple-memory
-      name: 'dsh-simple-memory'
+- id: simple-memory
+  name: 'dsh-simple-memory'
+  config:
+    globalMemoryDir: '/Users/<你的用户名>/Documents/DSH/memory'  # 记忆根目录，可省略（默认同路径）
