@@ -4,6 +4,8 @@
 
 ![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)
 
+[![Awesome DSH Plugin](https://awesome-dsh-plugin.com/badge.svg)](https://awesome-dsh-plugin.com)
+
 面向 [DeepSeek Harness](https://github.com/deepseek-ai/deepseek-harness)（`dsh`）web 的**简单记忆管家**：检索式记忆，存储零代码。不建数据库、不搞向量检索——就是"组织好的 md 文件 + 一个只管入口的薄插件"。正常干活不受打扰，记忆作为**外挂文件系统**在旁边积累，规则时不时提醒你记一笔。
 
 > **状态：核心链路已通（0.2.0），真实使用效果待长期测试**——测试流程与结果见 [docs/全链路验证记录](docs/全链路验证记录-2026-08-18.md)，设计原理见 [docs/记忆系统设计说明](docs/记忆系统设计说明.md)。

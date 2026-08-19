@@ -4,6 +4,8 @@
 
 ![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)
 
+[![Awesome DSH Plugin](https://awesome-dsh-plugin.com/badge.svg)](https://awesome-dsh-plugin.com)
+
 A **simple memory keeper** plugin for [DeepSeek Harness](https://github.com/deepseek-ai/deepseek-harness) (`dsh`) web: retrieval-style memory with zero-code storage. No database, no vector store — just well-organized markdown files plus a thin plugin that handles the entry points. Normal work is never interrupted; memory accumulates as a **sidecar filesystem** beside your projects, and rules nudge you to record a note from time to time.
 
 > **Status: core pipeline verified (0.2.0), real-world effect still under testing** — see [docs/verification-log](docs/全链路验证记录-2026-08-18.md) for the test run and [docs/design](docs/记忆系统设计说明.md) for how it works.
