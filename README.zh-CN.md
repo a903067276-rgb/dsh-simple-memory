@@ -58,7 +58,7 @@ dsh plugin --profile web add "github:a903067276-rgb/dsh-simple-memory#main"
 ## 环境要求
 
 - DSH web（≥ 0.1.0-rc.7）
-- 铁了心用 rc.6 的用户：请安装冻结 tag：`dsh plugin add github:a903067276-rgb/dsh-simple-memory#rc6-compat`（不再维护，强烈建议升级 rc.7+）
+- rc.6 用户：请安装冻结 tag：`dsh plugin add github:a903067276-rgb/dsh-simple-memory#rc6-compat`（不再维护，强烈建议升级 rc.7+）
 - git CLI（可选：没有 git，记忆目录就是普通文件夹）
 
 ## 工作原理

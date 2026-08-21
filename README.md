@@ -58,6 +58,7 @@ Manual install fallback: see [docs/install.md](docs/install.md).
 ## Requirements
 
 - DSH web >= 0.1.0-rc.7
+- **rc.6 users:** install the frozen `rc6-compat` tag instead: `dsh plugin add github:a903067276-rgb/dsh-simple-memory#rc6-compat` (no maintenance; upgrade to rc.7+ recommended)
 - git CLI (optional: without git, the memory repo is just a plain directory)
 
 ## How it works
