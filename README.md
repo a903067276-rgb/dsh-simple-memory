@@ -57,7 +57,7 @@ Manual install fallback: see [docs/install.md](docs/install.md).
 
 ## Requirements
 
-- DSH web
+- DSH web >= 0.1.0-rc.7
 - git CLI (optional: without git, the memory repo is just a plain directory)
 
 ## How it works

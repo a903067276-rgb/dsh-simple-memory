@@ -57,7 +57,7 @@ dsh plugin --profile web add "github:a903067276-rgb/dsh-simple-memory#main"
 
 ## 环境要求
 
-- DSH web
+- DSH web（≥ 0.1.0-rc.7）
 - git CLI（可选：没有 git，记忆目录就是普通文件夹）
 
 ## 工作原理
