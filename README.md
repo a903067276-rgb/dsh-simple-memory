@@ -30,6 +30,7 @@ A **simple memory keeper** plugin for [DeepSeek Harness](https://github.com/deep
 | Click the memory button | A fixed memory-flow instruction is inserted — the model runs the standardized flow (review → propose with scope → confirm → write → show output → commit) |
 | Write memory | The `memory-write` tool enforces the format (name `分类-主题.md`, ≤2KB, date header; scope = project/global) |
 | Browse memory | Inline browser in the settings page: flat per-project lists + global common/, click to read |
+| Cross-session search | `session_search` searches past session transcripts by keyword (time / workspace / title / best-match snippet); needs the official session full-text index enabled in the profile |
 | Initialize | One click creates the repo skeleton (common/projects/references/archive/staging) + `git init` |
 | Relocate | Change the memory root from the settings page (writes patch config, takes effect after restart) |
 
@@ -90,6 +91,10 @@ A retrieval-style memory: files are the storage, the plugin only handles the ent
 - **Settings page (manage + browse)** — status line (active count, staging count), memory-root config, one-click repo skeleton init, and an inline browser listing every project flat plus global, click to read.
 
 - **Search (finds it)** — no index files: the agent's grep scans the whole memory root (all projects + global + cold zones) in one pass, active zones first.
+
+- **Cross-session search (asks "when did we talk about X")** — `session_search` queries the official session full-text index (`session-query-sqlite`) and returns the matching sessions' time / workspace / title / best-match snippet.
+  - Prerequisite: override `session-query-sqlite`'s `openAt` to `first-search` (plus a durable `path`) in the profile's `cordis.patch.yml`, then restart dsh. When the index is off, the tool returns an actionable notice instead of an error.
+  - **Known limitation (measured 2026-09-10)**: the official index build scans every persisted session, so **one unreadable legacy log fails the entire search** (`session-search persistence observation failed: …`). On this machine 27 of 150 session logs triggered it (mostly `subagent/descriptor … uses unsupported descriptor version 2`, plus two hand-repaired `chunk provenance` cases); moving them out of the sessions directory made search work. Record: [docs/验证记录-2026-09-10-session_search.md](docs/验证记录-2026-09-10-session_search.md).
 
 - **Promotion (cross-project reuse)** — project memory that looks reusable goes into `staging.md` (low friction, no instant decision); when the pool is non-empty the user is reminded, and after confirmation it is distilled into `common/` and removed from the pool.
 

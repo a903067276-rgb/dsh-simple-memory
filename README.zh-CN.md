@@ -30,6 +30,7 @@
 | 点记忆按钮 | 输入框插入固定"记忆流程指令"——模型走规范流程（回顾→提议标 scope→确认→写入→贴产出物→commit） |
 | 写记忆 | `memory-write` 工具强制格式（文件名 `分类-主题.md`、≤2KB、日期首行；scope=项目/全局） |
 | 浏览记忆 | 设置页内嵌浏览：所有项目平级列表 + 全局 common/，点开即读全文 |
+| 跨会话检索 | `session_search` 工具按关键词搜历史会话正文（返回时间 / 工作区 / 标题 / 命中片段）；需先在 profile 打开官方会话全文索引 |
 | 初始化 | 设置页一键建目录骨架（common/projects/references/archive/staging）+ `git init` |
 | 改位置 | 设置页改记忆根目录（写 patch 配置，重启生效） |
 
@@ -90,6 +91,10 @@ dsh plugin --profile web add "github:a903067276-rgb/dsh-simple-memory#main"
 - **设置页（管理+浏览）**：状态行（活跃条数、staging 条数）、记忆根目录配置、一键初始化骨架、内嵌浏览（所有项目平级 + 全局，点开即读）。
 
 - **检索（找得到）**：不建索引文件，agent 的 grep 直接搜整个记忆根（所有项目 + 全局 + 冷区），先活跃后冷区。
+
+- **跨会话检索（问得到"上次聊过什么"）**：`session_search` 调官方会话全文索引（`session-query-sqlite`），返回命中会话的时间 / 工作区 / 标题 / 命中片段。
+  - 前置：profile 的 `cordis.patch.yml` 把 `session-query-sqlite` 的 `openAt` 覆盖为 `first-search`（建议同时配持久 `path`），重启 dsh 生效；索引没开时工具返回可操作提示，不算错误。
+  - **已知限制（2026-09-10 实测）**：官方索引建库是**全量扫描**历史会话，任何一条读不动的老日志都会让检索**整体失败**（`session-search persistence observation failed: …`）。实测本机 150 条会话里 27 条 v0 老格式日志会触发（多为 `subagent/descriptor … uses unsupported descriptor version 2`，另有手工修过的 `chunk provenance`）；把这些日志移出 sessions 目录后检索恢复正常。验证记录：[docs/验证记录-2026-09-10-session_search.md](docs/验证记录-2026-09-10-session_search.md)。
 
 - **升格（跨项目复用）**：项目经验看着可复用 → 入 `staging.md`（低摩擦，不逼当场决策）；池子非空提醒 → 用户点头 → 提炼入 `common/` → 出池删条目。
 
