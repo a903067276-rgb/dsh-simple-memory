@@ -26,7 +26,7 @@ A **simple memory keeper** plugin for [DeepSeek Harness](https://github.com/deep
 
 | Action | Effect |
 |---|---|
-| Open a session | Memory index (current project + global + loose root files) is injected once per session — the model "remembers" what exists |
+| Open a session | A **three-part** memory index (current project progress body + 6 most recently touched notes + category counts for the rest) is injected once per session — the model both "remembers" what exists and sees where the project actually stands |
 | Click the memory button | A fixed memory-flow instruction is inserted — the model runs the standardized flow (review → propose with scope → confirm → write → show output → commit) |
 | Write memory | The `memory-write` tool enforces the format (name `分类-主题.md`, ≤2KB, date header; scope = project/global) |
 | Browse memory | Inline browser in the settings page: flat per-project lists + global common/, click to read |
@@ -82,7 +82,7 @@ A retrieval-style memory: files are the storage, the plugin only handles the ent
   ```
   Per-project memory does NOT live inside the project directory: a `.gitignore`'d `memory/` would hide it from grep. Keeping it in the shared root keeps publication isolation automatic and search universal.
 
-- **Index injection (remembers what exists)** — on the first step of every session (`agent/pre-step`), the plugin injects a **filename list** (never the content), grouped by category, covering the current project + global + loose root files. The model then reads a full note (≤2KB each) on demand. Cold zones are not injected — searched only when a topic hits.
+- **Index injection (three-part)** — on the first step of every session (`agent/pre-step`): (1) the **current project progress body** (`progress/<project>.md`, so resuming shows real state rather than stale state; flagged "stale" past 14 days, ages resolved to minutes/hours); (2) the **6 most recently touched notes** (title + first-line conclusion, project + global by mtime, so recent pitfalls surface by themselves); (3) everything else as **category counts + a search entry point** (use `memory_search` instead of reading the list). `docs/` keeps its file names — that directory sits outside the memory root and search cannot reach it. Measured at about **2536 characters / 2024 tokens** (cl100k; ~1450-1700 with DeepSeek's Chinese tokenizer), and it **does not grow with the number of notes**. Cold zones (`references/`, `archive/`) are not injected — searched only when a topic hits.
 
 - **Write tool (records it)** — `memory-write` enforces the format: filename `分类-主题.md`, first line `## date 分类-主题`, ≤2KB, category prefixes open (built-in: 踩坑/流程/决策/偏好/背景). `scope` picks project or global. Writing outside the workspace asks for approval (built-in confirmation).
 
