@@ -58,8 +58,9 @@ dsh plugin --profile web add "github:a903067276-rgb/dsh-simple-memory#main"
 ## 环境要求
 
 - DSH web（≥ 0.1.0-rc.6）
-- **版本兼容**（尽力兼容——设置卡片用双字段 `key`+`id` 注册，同满足 rc.6（id 契约）与 rc.7+（key 契约）；已在本地实测 rc.6/rc.8/0.1.1-rc.2，**不保证每个 DSH 版本**）：
+- **版本兼容**（尽力兼容——设置卡片用双字段 `key`+`id` 注册，同满足 rc.6（id 契约）与 rc.7+（key 契约）；已在本地实测 rc.6/rc.8/0.1.1-rc.2/0.1.5-rc.1，**不保证每个 DSH 版本**）：
   - DSH 0.1.0-rc.6 及以上（含 0.1.1-rc.1/rc.2）：装 `main`（默认）。
+  - **DSH 0.1.5-rc.1：加载实测通过**（插件已进客户端 bundle、host 半加载、设置分区渲染）；记忆读写走自有 `/api/dsh-simple-memory` 路由，不依赖 0.1.5 变更过的契约。UI 交互未逐项肉眼复测。
   - 保守回退（升级前的最后版本）：DSH 0.1.0-rc.7/rc.8 → `v0.2.5`（`dsh plugin add github:a903067276-rgb/dsh-simple-memory#v0.2.5`）；DSH 0.1.0-rc.6 → 冻结 `rc6-compat`（不再维护）。
 - git CLI（可选：没有 git，记忆目录就是普通文件夹）
 - **维护策略**：本插件将持续跟随 DSH 最新版本演进；对旧版 DSH 的兼容仅是尽力而为、不保证长期有效。

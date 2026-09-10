@@ -58,8 +58,9 @@ Manual install fallback: see [docs/install.md](docs/install.md).
 ## Requirements
 
 - DSH web >= 0.1.0-rc.6
-- **Version compatibility** (best effort — the settings card uses dual-field `key`+`id` registration to satisfy both rc.6 (`id`) and rc.7+ (`key`); verified locally on rc.6/rc.8/0.1.1-rc.2, **not guaranteed on every DSH version**):
+- **Version compatibility** (best effort — the settings card uses dual-field `key`+`id` registration to satisfy both rc.6 (`id`) and rc.7+ (`key`); verified locally on rc.6/rc.8/0.1.1-rc.2/0.1.5-rc.1, **not guaranteed on every DSH version**):
   - DSH 0.1.0-rc.6 and newer (incl. 0.1.1-rc.1/rc.2): try `main` (default).
+  - **DSH 0.1.5-rc.1: load-verified** (plugin present in the client bundle, host half loaded, settings section rendered); memory I/O uses its own `/api/dsh-simple-memory` routes and touches none of the contracts changed in 0.1.5. UI interactions were not eyeballed item by item.
   - Conservative fallbacks (the last pre-0.1.1 build): DSH 0.1.0-rc.7/rc.8 → `v0.2.5` (`dsh plugin add github:a903067276-rgb/dsh-simple-memory#v0.2.5`); DSH 0.1.0-rc.6 → frozen `rc6-compat` tag (no maintenance).
 - git CLI (optional: without git, the memory repo is just a plain directory)
 - **Maintenance policy**: this plugin keeps evolving with the latest DSH releases; compatibility with older DSH versions is best-effort only and not guaranteed going forward.
