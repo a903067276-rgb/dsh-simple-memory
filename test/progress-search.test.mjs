@@ -122,7 +122,11 @@ test('staging 池计数与时间口径', () => {
     ].join('\n'), 'utf8')
     assert.equal(h.stagingCount(), 2, '只数 "- 日期" 开头的条目')
 
-    assert.equal(h.ago(Date.now()), '今天')
+    // 当天内给到分钟/小时——滞后要看得出来（只写"今天"等于没信号）
+    assert.equal(h.ago(Date.now()), '刚刚')
+    assert.equal(h.ago(Date.now() - 5 * 60000), '5 分钟前')
+    assert.equal(h.ago(Date.now() - 2 * 3600000), '2 小时前')
+    assert.equal(h.ago(Date.now() - 8 * 3600000), '今天早些时候')
     assert.equal(h.ago(Date.now() - 86400000), '昨天')
     assert.equal(h.ago(Date.now() - 3 * 86400000), '3 天前')
     assert.equal(h.ago(0), '时间未知')
