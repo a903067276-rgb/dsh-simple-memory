@@ -14,7 +14,7 @@ A **simple memory keeper** plugin for [DeepSeek Harness](https://github.com/deep
 
 ## Screenshot
 
-**Memory button** (the bulb icon left of the input box): one click starts the memory flow — review → propose each item with a project/global scope and reason → confirm → write → show output → commit:
+**Memory button** (the bulb icon left of the input box): one click opens a **four-action menu** — Recall (review the turn, list candidates, write only after you confirm) / Promote (tidy the staging and dream pools, propose destinations) / Browse (list + search + read) / Dream (randomly combine memories for cross-project insights):
 
 ![Memory button triggers the memory flow](assets/memory-button.png)
 
@@ -27,9 +27,10 @@ A **simple memory keeper** plugin for [DeepSeek Harness](https://github.com/deep
 | Action | Effect |
 |---|---|
 | Open a session | A **three-part** memory index (current project progress body + 6 most recently touched notes + category counts for the rest) is injected once per session — the model both "remembers" what exists and sees where the project actually stands |
-| Click the memory button | A fixed memory-flow instruction is inserted — the model runs the standardized flow (review → propose with scope → confirm → write → show output → commit) |
+| Click the memory button | Opens a **four-action menu**: **Recall** (review the turn → list candidates with scope + reason → write only after you confirm) / **Promote** (tidy `staging.md` and `dreams.md` → propose destinations → execute after confirmation) / **Browse** (in-place panel: grouped list + search box + click to read) / **Dream** (randomly combine 3–5 memories for cross-project insights; output lands in the dream pool awaiting confirmation) |
 | Write memory | The `memory-write` tool enforces the format (name `分类-主题.md`, ≤2KB, date header; scope = project/global) |
-| Browse memory | Inline browser in the settings page: flat per-project lists + global common/, click to read |
+| Browse memory | In the input-bar panel or inline in the settings page: flat per-project lists + global common/, **with a search box**, click to read |
+| Dream pool | `dreams.md` holds dreamt insights (entry memories + connection + suggested destination + status); **promoted into `common/` or the owning project only after you confirm** — same mechanism as staging: stash → confirm → promote |
 | Cross-session search | `session_search` searches past session transcripts by keyword (time / workspace / title / best-match snippet); needs the official session full-text index enabled in the profile |
 | Initialize | One click creates the repo skeleton (common/projects/references/archive/staging) + `git init` |
 | Relocate | Change the memory root from the settings page (writes patch config, takes effect after restart) |
@@ -45,8 +46,12 @@ Manual install fallback: see [docs/install.md](docs/install.md).
 
 ## Usage
 
-- **Memory button** (the bulb icon left of the input box) — one click inserts a fixed, self-contained memory-flow instruction; the model then runs the standardized flow (review → propose each item with a project/global scope and reason → confirm → write → show output → commit).
-- **Settings → Memory** — status overview, memory-root config, one-click repo init, and an inline browser: flat per-project lists plus global, click to read.
+- **Memory button** (the bulb icon left of the input box) — one click opens a **four-action menu** (instructions are self-contained, no AGENTS.md needed):
+  - **Recall**: review the turn → list what is worth remembering (decisions/pitfalls/conventions/preferences) with scope (project/global) + reason → **write only after you confirm** → show output → commit.
+  - **Promote**: read `staging.md` (staging pool) and `dreams.md` (dream pool) → decide each item's destination (promote into `common/` or the owning project; suggest dropping duplicates/outdated ones) → propose for your confirmation → execute and remove from the pool.
+  - **Browse**: open an in-place panel (project/global grouping + **search box** + click to read) without spending a conversation turn.
+  - **Dream**: randomly draw 3–5 memories library-wide, look for shared root causes / contradictions / transferable solutions / gaps → at most 2–3 insights → written to the dream pool (with suggested destination, status "pending").
+- **Settings → Memory** — status overview (global count · staging pool · dream pool), memory-root config, one-click repo init, and an inline browser: flat per-project lists plus global, click to read.
 
 ## Platform support
 
@@ -86,9 +91,9 @@ A retrieval-style memory: files are the storage, the plugin only handles the ent
 
 - **Write tool (records it)** — `memory-write` enforces the format: filename `分类-主题.md`, first line `## date 分类-主题`, ≤2KB, category prefixes open (built-in: 踩坑/流程/决策/偏好/背景). `scope` picks project or global. Writing outside the workspace asks for approval (built-in confirmation).
 
-- **Memory button (triggers the flow)** — the bulb icon in the input bar inserts a fixed, self-contained instruction: ① review the conversation ② propose each item with a scope (project/global) + reason ③ wait for user confirmation ④ write via `memory-write` ⑤ show the output ⑥ git commit (`mem: 记 xxx`).
+- **Memory button (four-action menu)** — the bulb icon in the input bar opens: **Recall** (review the turn → propose items with scope + reason → wait for confirmation → `memory-write` → show output → commit) / **Promote** (tidy `staging.md` + `dreams.md` → propose destinations → execute and remove from pool after confirmation) / **Browse** (in-place panel: grouped list + search + click to read) / **Dream** (randomly combine 3–5 memories → at most 2–3 insights → written to the dream pool as pending).
 
-- **Settings page (manage + browse)** — status line (active count, staging count), memory-root config, one-click repo skeleton init, and an inline browser listing every project flat plus global, click to read.
+- **Settings page (manage + browse)** — status line (active count · staging count · dream-pool count), memory-root config, one-click repo skeleton init (includes `staging.md` / `dreams.md` templates), and an inline browser listing every project flat plus global, click to read.
 
 - **Search (finds it)** — no index files: the agent's grep scans the whole memory root (all projects + global + cold zones) in one pass, active zones first.
 
@@ -96,7 +101,9 @@ A retrieval-style memory: files are the storage, the plugin only handles the ent
   - Prerequisite: override `session-query-sqlite`'s `openAt` to `first-search` (plus a durable `path`) in the profile's `cordis.patch.yml`, then restart dsh. When the index is off, the tool returns an actionable notice instead of an error.
   - **Known limitation (measured 2026-09-10)**: the official index build scans every persisted session, so **one unreadable legacy log fails the entire search** (`session-search persistence observation failed: …`). On this machine 27 of 150 session logs triggered it (mostly `subagent/descriptor … uses unsupported descriptor version 2`, plus two hand-repaired `chunk provenance` cases); moving them out of the sessions directory made search work. Record: [docs/验证记录-2026-09-10-session_search.md](docs/验证记录-2026-09-10-session_search.md).
 
-- **Promotion (cross-project reuse)** — project memory that looks reusable goes into `staging.md` (low friction, no instant decision); when the pool is non-empty the user is reminded, and after confirmation it is distilled into `common/` and removed from the pool.
+- **Promotion (cross-project reuse)** — project memory that looks reusable goes into `staging.md` (low friction, no instant decision); when the pool is non-empty the user is reminded (index tail + write-tool hint), and after confirmation it is distilled into `common/` or the owning project and removed from the pool.
+
+- **Dreaming (random recombination)** — draw 3–5 memories library-wide and look for shared root causes / contradictions / transferable solutions / gaps; output goes to `dreams.md` (with suggested destination + "pending" status) and is **promoted only after user confirmation** — the same downstream mechanism as staging (stash → confirm → promote).
 
 - **Forgetting (fresh context)** — outdated notes move to `archive/` (soft delete: still on disk, just out of the index). Context stays lean, disk stays complete.
 
@@ -106,7 +113,7 @@ A retrieval-style memory: files are the storage, the plugin only handles the ent
 
 - Memory git repos are local-only, never pushed to a remote.
 - Writing memory outside the workspace asks for approval (built-in confirmation, per the memory spec).
-- The memory-flow instruction is self-contained and does not depend on the global AGENTS.md; the judgment rules there are only a reference.
+- The four-action instructions (Recall / Promote / Dream) are self-contained and do not depend on the global AGENTS.md; the judgment rules there are only a reference.
 
 ## License
 
