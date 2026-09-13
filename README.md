@@ -16,7 +16,11 @@ A **simple memory keeper** plugin for [DeepSeek Harness](https://github.com/deep
 
 **Memory button** (the bulb icon left of the input box): one click opens a **four-action menu** — Recall (review the turn, list candidates, write only after you confirm) / Promote (tidy the staging and dream pools, propose destinations) / Browse (list + search + read) / Dream (randomly combine memories for cross-project insights):
 
-![Memory button triggers the memory flow](assets/memory-button.png)
+![Four-action menu of the memory button](assets/memory-button.png)
+
+**Memory panel** (pick "Browse" in the menu): opens in place — project/global grouping + **search box** + click to read, with three pool counters on top (global · staging · dreams); click the bulb again, the ×, or anywhere outside to dismiss:
+
+![Memory browser panel](assets/memory-browse.png)
 
 **Memory management page** (Settings → Memory): status overview, memory-root config, flat per-project lists plus global, click to read:
 
