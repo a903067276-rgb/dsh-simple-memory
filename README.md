@@ -107,7 +107,9 @@ A retrieval-style memory: files are the storage, the plugin only handles the ent
 
 - **Promotion (cross-project reuse)** — project memory that looks reusable goes into `staging.md` (low friction, no instant decision); when the pool is non-empty the user is reminded (index tail + write-tool hint), and after confirmation it is distilled into `common/` or the owning project and removed from the pool.
 
-- **Dreaming (random recombination)** — draw 3–5 memories library-wide and look for shared root causes / contradictions / transferable solutions / gaps; output goes to `dreams.md` (with suggested destination + "pending" status) and is **promoted only after user confirmation** — the same downstream mechanism as staging (stash → confirm → promote).
+- **Dreaming (random recombination)** — draw 3–5 memories library-wide and look for shared root causes / contradictions / transferable solutions / gaps; output goes to `dreams.md` (with suggested destination + "pending" status) and is **promoted only after user confirmation** — the same downstream mechanism as staging (stash → confirm → promote). **Association strategy (2026-09-13)**: sampling stays purely random, but start from *fragmentary* notes (pitfalls / undigested raw records) and go easy on forcing connections between finished decisions; an insight must state something the source notes never say outright — restating them is not an insight. If nothing real comes out, say "no dream this time" and leave the pool empty.
+
+- **Unified pool-counting rule (2026-09-13)** — index-tail reminders and the settings/browse counters count **pending items only**: lines marked `[已弃]`/`[已采纳]` in `dreams.md`, and any trace written in a non-entry format, are **not counted**; entries missing a status marker are still counted (better to over-remind than to hide pending work). Keep traces as `（已弃：…）`-style non-entry notes.
 
 - **Forgetting (fresh context)** — outdated notes move to `archive/` (soft delete: still on disk, just out of the index). Context stays lean, disk stays complete.
 
