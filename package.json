@@ -1,6 +1,6 @@
 {
   "name": "dsh-simple-memory",
-  "version": "0.4.1",
+  "version": "0.5.0",
   "description": "Simple memory keeper for DSH: semi-automatic markdown accumulation, layered loading (global/project), cross-project search",
   "type": "module",
   "main": "lib/index.js",
@@ -40,7 +40,8 @@
     "client": {
       "inject": [
         "@deepseek-ai/dsh-api-remotes",
-        "@deepseek-ai/dsh-client-ui-conversation"
+        "@deepseek-ai/dsh-client-ui-conversation",
+        "@deepseek-ai/dsh-client-ui-plugin-manager"
       ],
       "platform": "web"
     }
