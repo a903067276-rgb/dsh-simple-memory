@@ -73,6 +73,8 @@ Manual install fallback: see [docs/install.md](docs/install.md).
   - **DSH 0.1.5-rc.1: load-verified** (plugin present in the client bundle, host half loaded, settings section rendered); memory I/O uses its own `/api/dsh-simple-memory` routes and touches none of the contracts changed in 0.1.5. UI interactions were not eyeballed item by item.
   - Conservative fallbacks (the last pre-0.1.1 build): DSH 0.1.0-rc.7/rc.8 → `v0.2.5` (`dsh plugin add github:a903067276-rgb/dsh-simple-memory#v0.2.5`); DSH 0.1.0-rc.6 → frozen `rc6-compat` tag (no maintenance).
 - git CLI (optional: without git, the memory repo is just a plain directory)
+  - ✅ **DSH 0.1.7 and later — use this release (`v0.4.0`)**: it declares `peerDependencies: {"@deepseek-ai/dsh": ">=0.1.7-rc.1 <0.2.0"}`, so a mismatched host refuses to load it with an explicit reason instead of failing quietly. Settings move to the 0.1.7 model (plugin `Config`, live-editable `.volatile()` fields), so changes apply without a restart.
+  - ⚠️ **DSH 0.1.5 and older — install the previous tag `v0.3.8`**: that line keeps the old behavior and uses no 0.1.7-only API.
 - **Maintenance policy**: this plugin keeps evolving with the latest DSH releases; compatibility with older DSH versions is best-effort only and not guaranteed going forward.
 
 ## How it works
