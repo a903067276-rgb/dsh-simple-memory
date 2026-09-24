@@ -1,7 +1,7 @@
 # dsh-simple-memory：DSH 记忆管家（0.2.0，功能已就绪）
 # bundle 安装：dsh plugin --profile web add "github:a903067276-rgb/dsh-simple-memory#main"
 # 记忆根目录等配置：写 ~/.dsh/profiles/web/cordis.patch.yml 的同名条目 config（设置页可改）
-# 生效方式：重启 dsh web
+# 生效方式：0.1.7 起设置页保存即时生效（无需重启）；本文件只声明挂载条目
 - insert:
     - id: simple-memory
       name: 'dsh-simple-memory'

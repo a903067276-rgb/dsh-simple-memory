@@ -21,15 +21,21 @@ const end = source.indexOf('  // docs/ 宽松过滤')
 if (start < 0 || end < 0 || end <= start) throw new Error('助手段标记未找到')
 const helpers = source.slice(start, end)
 
-/** 在受控作用域里实例化助手函数（GLOBAL_MEMORY_DIR 由测试注入）。 */
+/**
+ * 在受控作用域里实例化助手函数（记忆根目录由测试注入）。
+ * 2026-09-24（DSH 0.1.7 迁移）：lib 里记忆根目录不再是常量 GLOBAL_MEMORY_DIR，而是
+ * 每次现读的 memDir()（配置热改即时生效），所以这里注入的是**返回临时目录的函数**；
+ * 同时修掉两处陈旧引用：stagingCount → stagingCountSync（2026-09-12 改名后测试没跟上，
+ * 本次迁移前 3 个用例即因此全红）、PROGRESS_DIR → progressDir()（同一次迁移）。
+ */
 function makeHelpers(memoryDir) {
-  const factory = new Function('GLOBAL_MEMORY_DIR', 'fsMod', 'pathMod', `"use strict";
+  const factory = new Function('memDir', 'fsMod', 'pathMod', `"use strict";
     const { readdirSync, readFileSync, statSync, existsSync, mkdirSync, writeFileSync } = fsMod;
     const { join, basename, relative } = pathMod;
     ${helpers}
-    return { mdFilesWithMtime, firstMeaningfulLine, ago, progressFileFor, readProgress, listOtherProgress, stagingCount, searchMemory, PROGRESS_DIR };
+    return { mdFilesWithMtime, firstMeaningfulLine, ago, progressFileFor, readProgress, listOtherProgress, stagingCountSync, searchMemory, progressDir };
   `)
-  return factory(memoryDir, nodeFs, nodePath)
+  return factory(() => memoryDir, nodeFs, nodePath)
 }
 
 function makeMemoryDir() {
@@ -120,7 +126,7 @@ test('staging 池计数与时间口径', () => {
       '- 2026-09-02 [来源：demo] 经验：B',
       '',
     ].join('\n'), 'utf8')
-    assert.equal(h.stagingCount(), 2, '只数 "- 日期" 开头的条目')
+    assert.equal(h.stagingCountSync(), 2, '只数 "- 日期" 开头的条目')
 
     // 当天内给到分钟/小时——滞后要看得出来（只写"今天"等于没信号）
     assert.equal(h.ago(Date.now()), '刚刚')

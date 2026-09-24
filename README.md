@@ -37,7 +37,7 @@ A **simple memory keeper** plugin for [DeepSeek Harness](https://github.com/deep
 | Dream pool | `dreams.md` holds dreamt insights (entry memories + connection + suggested destination + status); **promoted into `common/` or the owning project only after you confirm** — same mechanism as staging: stash → confirm → promote |
 | Cross-session search | `session_search` searches past session transcripts by keyword (time / workspace / title / best-match snippet); needs the official session full-text index enabled in the profile |
 | Initialize | One click creates the repo skeleton (common/projects/references/archive/staging) + `git init` |
-| Relocate | Change the memory root from the settings page (writes patch config, takes effect after restart) |
+| Relocate | Change the memory root from the settings page — saved through the official settings service into the plugin's profile-entry config, so it **takes effect immediately, no restart** (DSH ≥ 0.1.7; older hosts fall back to editing the patch file and still need a restart) |
 
 ## Install
 

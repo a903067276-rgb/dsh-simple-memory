@@ -47,7 +47,7 @@ dsh plugin --profile web add "github:a903067276-rgb/dsh-simple-memory#main"
   - `projects/<项目名>/`：项目经验（自动建目录）
   - `references/`、`archive/`：冷区（命中搜索才读）
   - `staging.md`：升格暂存池
-- **改位置**：设置页「记忆根目录」输入路径 → 保存 → 重启生效（写入 `~/.dsh/profiles/web/cordis.patch.yml` 的 simple-memory 条目 config）。
+- **改位置**：设置页「记忆根目录」输入路径 → 保存 → **立即生效，无需重启**。0.1.7 起经官方设置服务写进当前 profile 的 simple-memory 条目 config（`globalMemoryDir` 是 `.volatile()` 字段，宿主就地更新引用，检索/工具下一次调用即读新目录）。老宿主（没有 `settings.update`）才回落改写 `~/.dsh/profiles/web/cordis.patch.yml`，那条路径仍需重启。
 - 换目录后需在设置页重新点「初始化记忆仓库」建骨架（幂等）。
 
 ## 验证是否装好
