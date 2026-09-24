@@ -42,7 +42,10 @@ A **simple memory keeper** plugin for [DeepSeek Harness](https://github.com/deep
 ## Install
 
 ```bash
+# DSH 0.1.7 and later:
 dsh plugin --profile web add "github:a903067276-rgb/dsh-simple-memory#main"
+# DSH 0.1.5 and older (this release needs 0.1.7+):
+# dsh plugin --profile web add "github:a903067276-rgb/dsh-simple-memory#v0.3.8"
 ```
 
 Restart `dsh web`, then Settings → Memory → Initialize memory repo.
@@ -75,6 +78,7 @@ Manual install fallback: see [docs/install.md](docs/install.md).
 - git CLI (optional: without git, the memory repo is just a plain directory)
   - ✅ **DSH 0.1.7 and later — use this release (`v0.4.0`)**: it declares `peerDependencies: {"@deepseek-ai/dsh": ">=0.1.7-rc.1 <0.2.0"}`, so a mismatched host refuses to load it with an explicit reason instead of failing quietly. Settings move to the 0.1.7 model (plugin `Config`, live-editable `.volatile()` fields), so changes apply without a restart.
   - ⚠️ **DSH 0.1.5 and older — install the previous tag `v0.3.8`**: that line keeps the old behavior and uses no 0.1.7-only API.
+  - ⛔ **Old plugin releases (up to `v0.3.8`) are not supported on 0.1.7** — the first turn of every session fails (session format V4 rejects the old injected-message source) and settings are lost. Upgrade the plugin together with the host.
 - **Maintenance policy**: this plugin keeps evolving with the latest DSH releases; compatibility with older DSH versions is best-effort only and not guaranteed going forward.
 
 ## How it works

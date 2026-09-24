@@ -42,7 +42,10 @@
 ## 安装
 
 ```bash
+# DSH 0.1.7 及以后：
 dsh plugin --profile web add "github:a903067276-rgb/dsh-simple-memory#main"
+# DSH 0.1.5 及更早（本版需要 0.1.7+）：
+# dsh plugin --profile web add "github:a903067276-rgb/dsh-simple-memory#v0.3.8"
 ```
 
 装完重启 `dsh web`，设置 → 记忆 → 初始化记忆仓库。
@@ -75,6 +78,7 @@ dsh plugin --profile web add "github:a903067276-rgb/dsh-simple-memory#main"
 - git CLI（可选：没有 git，记忆目录就是普通文件夹）
   - ✅ **DSH 0.1.7 及以后——装本版（`v0.4.0`）**：它声明了 `peerDependencies: {"@deepseek-ai/dsh": ">=0.1.7-rc.1 <0.2.0"}`，宿主不匹配会明确拒绝加载并说明原因，不再静默出错。配置迁到 0.1.7 的插件 `Config`（`.volatile()` 字段可即时生效），改完不用重启。
   - ⚠️ **DSH 0.1.5 及更早——请装上一版 tag `v0.3.8`**：那条线保持原行为，不含任何 0.1.7 专用 API。
+  - ⛔ **旧版本插件（≤ `v0.3.8`）在 0.1.7 上不受支持**——每个会话的首轮直接失败（会话格式 V4 拒收旧的注入消息 source），设置也会失效。插件要跟宿主一起升。
 - **维护策略**：本插件将持续跟随 DSH 最新版本演进；对旧版 DSH 的兼容仅是尽力而为、不保证长期有效。
 
 ## 工作原理
