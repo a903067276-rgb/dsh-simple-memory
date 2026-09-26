@@ -121,6 +121,8 @@ dsh plugin --profile web add "github:a903067276-rgb/dsh-simple-memory#main"
 - **遗忘（上下文保鲜）**：过期的活跃记忆移入 `archive/`（软删除：还在硬盘，只退出索引）。上下文永远清爽，硬盘永远完整。
 
 - **自动提交（2026-09-26 起由插件自己做）**：`memory-write` / `memory-progress` 写入成功后，插件在记忆根里自动 `git add -A && git commit`（信息 `mem: <操作> <对象>`）。此前这条只写在四动作的提示词里（"顺手 commit"），模型一忘就攒着——现在不依赖模型自觉。想关：profile patch 里给条目加 `autoCommit: false`。
+- **提交状态看得见（v0.6.1）**：工具结果里直接写「（已自动提交）」或「（⚠ 自动提交失败：原因）」。背后是一处真坑——官方 shell 的 `result()` 对**非零退出不抛错**，只回一个带 `exitCode` 的对象，不看退出码就会"提交失败却报成功"（v0.6.0 就是这样在桌面端静默失败的）。
+- **自检路由（v0.6.1，只读）**：`GET /api/dsh-simple-memory/selftest` 会跑 `git --version` / `rev-parse --is-inside-work-tree` / `status --porcelain` / `commit --dry-run`，并各跑「不带会话策略」与「带会话策略」两组，返回真实 `exitCode` / `stdout` / `stderr`——排查"到底哪一步不行"用。
 - **回滚**：有了自动提交，写错一个 `git checkout` 回来即可。
 
 ## 注意事项
