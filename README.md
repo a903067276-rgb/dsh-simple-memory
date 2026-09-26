@@ -119,7 +119,8 @@ A retrieval-style memory: files are the storage, the plugin only handles the ent
 
 - **Forgetting (fresh context)** — outdated notes move to `archive/` (soft delete: still on disk, just out of the index). Context stays lean, disk stays complete.
 
-- **Rollback** — every memory operation is committed immediately (`mem: <action> <subject>`); a wrong write is one `git checkout` away.
+- **Auto-commit (the plugin does it itself since 2026-09-26)** — after a successful `memory-write` / `memory-progress`, the plugin runs `git add -A && git commit` inside the memory root (`mem: <action> <subject>`). Previously this lived only in the four-action prompts ("commit while you're at it"), so a distracted model could leave writes uncommitted. Disable with `autoCommit: false` on the profile entry.
+- **Rollback** — with auto-commit in place, a wrong write is one `git checkout` away.
 
 ## Notes
 
