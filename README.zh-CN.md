@@ -76,7 +76,8 @@ dsh plugin --profile web add "github:a903067276-rgb/dsh-simple-memory#main"
   - **DSH 0.1.5-rc.1：加载实测通过**（插件已进客户端 bundle、host 半加载、设置分区渲染）；记忆读写走自有 `/api/dsh-simple-memory` 路由，不依赖 0.1.5 变更过的契约。UI 交互未逐项肉眼复测。
   - 保守回退（升级前的最后版本）：DSH 0.1.0-rc.7/rc.8 → `v0.2.5`（`dsh plugin add github:a903067276-rgb/dsh-simple-memory#v0.2.5`）；DSH 0.1.0-rc.6 → 冻结 `rc6-compat`（不再维护）。
 - git CLI（可选：没有 git，记忆目录就是普通文件夹）
-  - ✅ **DSH 0.1.7 及以后——装本版（`v0.4.0`）**：它声明了 `peerDependencies: {"@deepseek-ai/dsh": ">=0.1.7-rc.1 <0.2.0"}`，宿主不匹配会明确拒绝加载并说明原因，不再静默出错。配置迁到 0.1.7 的插件 `Config`（`.volatile()` 字段可即时生效），改完不用重启。
+  - ✅ **DSH 0.1.7 及以后——装本版（`v0.7.1`）**：它声明了 `peerDependencies: {"@deepseek-ai/dsh": "^0.1.7-rc.1 || ^0.2.0-rc.1"}`，宿主不匹配会明确拒绝加载并说明原因，不再静默出错。配置迁到 0.1.7 的插件 `Config`（`.volatile()` 字段可即时生效），改完不用重启。
+  - ✅ **DSH 0.2.0-rc.1——已验证兼容**：peer 范围同时覆盖两条线（`^0.1.7-rc.1 || ^0.2.0-rc.1`），`@deepseek-ai/dsh-tools` 的 peer 也追加了 `|| ^0.2.0-rc.1`；`dsh.compatibility.dshReleases` 矩阵新增 `"0.2.0-rc.1": "compatible"`——已在 0.2.0-rc.1 真机 + 影子实例验证。0.2 起宿主对 profile bundle 做 peer 门禁，范围不覆盖当前运行时会**整个跳过加载**，靠这个范围插件才会被加载。
   - ⚠️ **DSH 0.1.5 及更早——请装上一版 tag `v0.3.8`**：那条线保持原行为，不含任何 0.1.7 专用 API。
   - ⛔ **旧版本插件（≤ `v0.3.8`）在 0.1.7 上不受支持**——每个会话的首轮直接失败（会话格式 V4 拒收旧的注入消息 source），设置也会失效。插件要跟宿主一起升。
 - **维护策略**：本插件将持续跟随 DSH 最新版本演进；对旧版 DSH 的兼容仅是尽力而为、不保证长期有效。
