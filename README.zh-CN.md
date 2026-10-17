@@ -38,7 +38,7 @@
 | 自动做梦（2026-10-01） | 到期（默认 7 天）由**插件自己**用便宜模型（默认 `deepseek-flash`）跑一批，产出只进 `dreams.md` 的 `[自动][待确认]`；**升格仍要你点头**。设置页可关（`dreamAutoRun`）或换模型（`dreamModel`） |
 | 浏览记忆 | 输入框浮层或设置页内嵌：所有项目平级列表 + 全局 common/，**带搜索框**，点开即读全文 |
 | 做梦池 | `dreams.md` 暂存梦到的洞察（入场记忆 + 连接 + 建议去向 + 状态）；**用户确认后才升格**进 common/ 或对应项目——机制同 staging：暂存 → 确认 → 升格 |
-| 跨会话检索 | `session_search` 工具按关键词搜历史会话正文（返回时间 / 工作区 / 标题 / 命中片段）；需先在 profile 打开官方会话全文索引 |
+| 跨会话检索 | `memory_session_search` 工具按关键词搜历史会话正文（返回时间 / 工作区 / 标题 / 命中片段）；需先在 profile 打开官方会话全文索引 |
 | 初始化 | 设置页一键建目录骨架（common/projects/references/archive/staging）+ `git init` |
 | 改位置 | 设置页改记忆根目录——经官方设置服务写进插件自己的 profile 条目 config，**改完即时生效、无需重启**（DSH ≥ 0.1.7；老宿主回落改 patch 文件，那条路径仍需重启） |
 
@@ -112,7 +112,7 @@ dsh plugin --profile web add "github:a903067276-rgb/dsh-simple-memory#main"
 
 - **检索（找得到）**：不建索引文件，agent 的 grep 直接搜整个记忆根（所有项目 + 全局 + 冷区），先活跃后冷区。
 
-- **跨会话检索（问得到"上次聊过什么"）**：`session_search` 调官方会话全文索引（`session-query-sqlite`），返回命中会话的时间 / 工作区 / 标题 / 命中片段。
+- **跨会话检索（问得到"上次聊过什么"）**：`memory_session_search` 调官方会话全文索引（`session-query-sqlite`），返回命中会话的时间 / 工作区 / 标题 / 命中片段。
   - 前置：profile 的 `cordis.patch.yml` 把 `session-query-sqlite` 的 `openAt` 覆盖为 `first-search`（建议同时配持久 `path`），重启 dsh 生效；索引没开时工具返回可操作提示，不算错误。
   - **已知限制（2026-09-10 实测）**：官方索引建库是**全量扫描**历史会话，任何一条读不动的老日志都会让检索**整体失败**（`session-search persistence observation failed: …`）。实测本机 150 条会话里 27 条 v0 老格式日志会触发（多为 `subagent/descriptor … uses unsupported descriptor version 2`，另有手工修过的 `chunk provenance`）；把这些日志移出 sessions 目录后检索恢复正常。验证记录：[docs/验证记录-2026-09-10-session_search.md](docs/验证记录-2026-09-10-session_search.md)。
 

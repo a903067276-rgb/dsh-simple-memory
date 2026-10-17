@@ -38,7 +38,7 @@ A **simple memory keeper** plugin for [DeepSeek Harness](https://github.com/deep
 | Auto dream (2026-10-01) | When due (7 days by default) the **plugin itself** runs a batch on a cheap model (`deepseek-flash` by default); output only lands in `dreams.md` as `[自动][待确认]`, and **promotion still needs your approval**. Toggle it off (`dreamAutoRun`) or change the model (`dreamModel`) in Settings |
 | Browse memory | In the input-bar panel or inline in the settings page: flat per-project lists + global common/, **with a search box**, click to read |
 | Dream pool | `dreams.md` holds dreamt insights (entry memories + connection + suggested destination + status); **promoted into `common/` or the owning project only after you confirm** — same mechanism as staging: stash → confirm → promote |
-| Cross-session search | `session_search` searches past session transcripts by keyword (time / workspace / title / best-match snippet); needs the official session full-text index enabled in the profile |
+| Cross-session search | `memory_session_search` searches past session transcripts by keyword (time / workspace / title / best-match snippet); needs the official session full-text index enabled in the profile |
 | Initialize | One click creates the repo skeleton (common/projects/references/archive/staging) + `git init` |
 | Relocate | Change the memory root from the settings page — saved through the official settings service into the plugin's profile-entry config, so it **takes effect immediately, no restart** (DSH ≥ 0.1.7; older hosts fall back to editing the patch file and still need a restart) |
 
@@ -111,7 +111,7 @@ A retrieval-style memory: files are the storage, the plugin only handles the ent
 
 - **Search (finds it)** — no index files: the agent's grep scans the whole memory root (all projects + global + cold zones) in one pass, active zones first.
 
-- **Cross-session search (asks "when did we talk about X")** — `session_search` queries the official session full-text index (`session-query-sqlite`) and returns the matching sessions' time / workspace / title / best-match snippet.
+- **Cross-session search (asks "when did we talk about X")** — `memory_session_search` queries the official session full-text index (`session-query-sqlite`) and returns the matching sessions' time / workspace / title / best-match snippet.
   - Prerequisite: override `session-query-sqlite`'s `openAt` to `first-search` (plus a durable `path`) in the profile's `cordis.patch.yml`, then restart dsh. When the index is off, the tool returns an actionable notice instead of an error.
   - **Known limitation (measured 2026-09-10)**: the official index build scans every persisted session, so **one unreadable legacy log fails the entire search** (`session-search persistence observation failed: …`). On this machine 27 of 150 session logs triggered it (mostly `subagent/descriptor … uses unsupported descriptor version 2`, plus two hand-repaired `chunk provenance` cases); moving them out of the sessions directory made search work. Record: [docs/验证记录-2026-09-10-session_search.md](docs/验证记录-2026-09-10-session_search.md).
 
